@@ -1,5 +1,5 @@
 class urlApi {
-  static const String baseUrl = 'https://apsensi.my.id/api';
+  static const String baseUrl = 'https://eduprence.my.id/api';
 
   static String login() {
     return baseUrl + '/login';

@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Constant {
-  static const String baseUrl = 'https://apsensi.my.id/api';
+  static const String baseUrl = 'https://eduprence.my.id/api';
 
   static Future<void> saveToken(String token) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
