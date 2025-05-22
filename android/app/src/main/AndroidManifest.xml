@@ -6,7 +6,7 @@
 
 
     <application
-        android:label="Apsensi"
+        android:label="EduPresence"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
