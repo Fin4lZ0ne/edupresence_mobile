@@ -18,52 +18,62 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
 
+  final FocusNode _usernameFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    username.dispose();
+    password.dispose();
+    _usernameFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-        gradient: background,
-      ),
-          child: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 31),
-            children: [
-              Container(
-                width: 150,
-                height: 47,
-                margin: const EdgeInsets.only(
-                  top: 100,
-                  bottom: 100,
-                ),
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/login/logo_title.png'),
-                  ),
+          gradient: background,
+        ),
+        child: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 31),
+          children: [
+            Container(
+              width: 150,
+              height: 47,
+              margin: const EdgeInsets.only(
+                top: 100,
+                bottom: 100,
+              ),
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/login/logo_title.png'),
                 ),
               ),
-              Text(
-                textAlign: TextAlign.center,
-                'Login',
-                style: blackTextStyle.copyWith(
-                  fontSize: 27,
-                  fontWeight: black,
-                ),
+            ),
+            Text(
+              textAlign: TextAlign.center,
+              'Login',
+              style: blackTextStyle.copyWith(
+                fontSize: 27,
+                fontWeight: black,
               ),
-              const SizedBox(
-                height: 30,
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Container(
+              padding: const EdgeInsets.all(22),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: whiteColor,
               ),
-              Container(
-                padding: const EdgeInsets.all(22),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: whiteColor,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // EMAIL INPUT
-          
-                    Column(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -75,91 +85,113 @@ class _LoginPageState extends State<LoginPage> {
                         const SizedBox(
                           height: 5,
                         ),
-                        CustomTextField(
+                        TextFormField(
                           controller: username,
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Password',
-                          style: blackTextStyle.copyWith(
-                            fontWeight: medium,
+                          focusNode: _usernameFocusNode,
+                          decoration: InputDecoration(
+                            border: UnderlineInputBorder(),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: buttonActiveColor, width: 2),
+                            ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 5,
+                      ]),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Password',
+                        style: blackTextStyle.copyWith(
+                          fontWeight: medium,
                         ),
-                        CustomTextField(
-                          controller: password,
-                          isPassword: true,
-                          isObscure: _isObscure,
-                          toggleObscureText: () {
-                            setState(() {
-                              _isObscure = !_isObscure;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const ForgotPage();
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      TextFormField(
+                        controller: password,
+                        focusNode: _passwordFocusNode,
+                        obscureText: _isObscure,
+                        decoration: InputDecoration(
+                          border: UnderlineInputBorder(),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide:
+                                BorderSide(color: buttonActiveColor, width: 2),
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isObscure
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isObscure = !_isObscure;
+                              });
                             },
                           ),
-                        );
+                        ),
+                        validator: (value) => value == null || value.isEmpty
+                            ? 'Password harus diisi'
+                            : null,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const ForgotPage();
+                          },
+                        ),
+                      );
+                    },
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        "Forgot Password?",
+                        style: blueTextStyle,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: TextButton(
+                      onPressed: () async {
+                        await AuthController.login(context, username, password);
                       },
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                          "Forgot Password?",
-                          style: blueTextStyle,
+                      style: TextButton.styleFrom(
+                        backgroundColor: buttonActiveColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(56),
+                        ),
+                      ),
+                      child: Text(
+                        'Login',
+                        style: whiteTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: semibold,
                         ),
                       ),
                     ),
-          
-                    const SizedBox(
-                      height: 8,
-                    ),
-          
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: TextButton(
-                        onPressed: () async {
-                          await AuthController.login(context, username, password);
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: buttonActiveColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(56),
-                          ),
-                        ),
-                        child: Text(
-                          'Login',
-                          style: whiteTextStyle.copyWith(
-                            fontSize: 16,
-                            fontWeight: semibold,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

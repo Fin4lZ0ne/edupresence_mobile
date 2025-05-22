@@ -146,19 +146,19 @@ class _EditProfileState extends State<EditProfile> {
             key: _formKey,
             child: Column(
               children: [
-                GestureDetector(
-                  onTap: _pickImage,
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundImage: _image != null
-                        ? FileImage(_image!)
-                        : (_profileImageUrl != null
-                            ? NetworkImage(_profileImageUrl!)
-                            : AssetImage('assets/profile/user.png'))
-                                as ImageProvider,
-                  ),
-                ),
-                SizedBox(height: 20),
+                // GestureDetector(
+                //   onTap: _pickImage,
+                //   child: CircleAvatar(
+                //     radius: 50,
+                //     backgroundImage: _image != null
+                //         ? FileImage(_image!)
+                //         : (_profileImageUrl != null
+                //             ? NetworkImage(_profileImageUrl!)
+                //             : AssetImage('assets/profile/user.png'))
+                //                 as ImageProvider,
+                //   ),
+                // ),
+                // SizedBox(height: 20),
                 EditProfileWidget.textedit(),
                 SizedBox(height: 20),
                 EditProfileWidget.buildTextField('Nama Panjang', Icons.person_outline,

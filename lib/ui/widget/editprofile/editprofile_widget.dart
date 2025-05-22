@@ -50,7 +50,7 @@ class EditProfileWidget {
             context: context,
             initialDate: DateTime.now(),
             firstDate: DateTime(1900),
-            lastDate: DateTime(2100),
+            lastDate: DateTime.now().subtract(Duration(days: 1)),
           );
           if (pickedDate != null) {
             controller.text = pickedDate.toIso8601String().split('T').first;
